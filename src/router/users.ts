@@ -3,6 +3,6 @@ import { getUsers, updateUser, deleteUser } from "../controllers/users";
 
 export default function (router: express.Router) {
   router.get("/users", getUsers);
-  router.patch("/user/:id", updateUser);
-  router.delete("/user/:id", deleteUser);
+  router.patch("/users/:id", updateUser);
+  router.delete("/users/:id", deleteUser);
 }
