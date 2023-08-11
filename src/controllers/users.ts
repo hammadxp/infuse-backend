@@ -17,24 +17,14 @@ export async function updateUser(req: express.Request, res: express.Response) {
     const { id } = req.params;
     const data = req.body;
 
-    console.log(id);
-    console.log(data);
-
     const user = await dbUsers.getUserById(id);
     if (!user) {
       return res.status(400).send("Can't update the user because the user does not exist.");
     }
 
-    console.log("this user", user);
+    const updatedUser = await dbUsers.updateUserById(id, data);
 
-    // for (let key in data) {
-    //   if ((user as User[key]) && user[key] === data[key]) {
-    //     console.log("mf");
-    //   }
-    // }
-
-    const updatedUser = await dbUsers.updateUserById(id, { $set: data });
-    // return res.status(200).json(updatedUser);
+    return res.status(200).json(updatedUser);
   } catch (err) {
     console.log(err);
     return res.sendStatus(400);
