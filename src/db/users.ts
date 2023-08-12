@@ -2,7 +2,9 @@ import mongoose from "mongoose";
 
 const UserSchema = new mongoose.Schema({
   email: { type: String, required: true },
-  username: { type: String, required: true },
+  username: { type: String },
+  fullName: { type: String, required: true },
+  photoUrl: { type: String },
   authentication: {
     encryptedPassword: { type: String, required: true, select: false },
     salt: { type: String, select: false },

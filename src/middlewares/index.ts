@@ -10,8 +10,11 @@ export async function isAuthenticated(req: express.Request, res: express.Respons
       return res.sendStatus(403);
     }
 
+    console.log(sessionToken);
+
     const user = await getUserBySessionToken(sessionToken);
     if (!user) {
+      console.log("alas again");
       return res.sendStatus(403);
     }
 

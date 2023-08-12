@@ -1,12 +1,12 @@
 import express from "express";
-import { getUserByEmail, createUser } from "../db/users";
+import { getUserByEmail, createUser, updateUserById } from "../db/users";
 import { generateRandomString, encryptString } from "../helpers/authentication";
 
 export async function signUp(req: express.Request, res: express.Response) {
   try {
-    const { email, password, username } = req.body;
+    const { email, password, fullName } = req.body;
 
-    if (!email || !password || !username) {
+    if (!email || !password || !fullName) {
       return res.status(400).send("Please provide all credientials.");
     }
 
@@ -20,7 +20,7 @@ export async function signUp(req: express.Request, res: express.Response) {
 
     const userDoc = await createUser({
       email,
-      username,
+      fullName,
       authentication: {
         encryptedPassword,
         salt,
@@ -57,12 +57,14 @@ export async function signIn(req: express.Request, res: express.Response) {
     const salt = generateRandomString();
     const sessionToken = encryptString(user._id.toString(), salt);
 
-    user.authentication.sessionToken = sessionToken;
-    await user.save();
+    // user.authentication.sessionToken = sessionToken;
+    // await user.save();
 
-    res.cookie("INFUSE-AUTH", user.authentication.sessionToken, { domain: "localhost", path: "/" });
+    const updatedUser = await updateUserById(user._id.toString(), { $set: { "authentication.sessionToken": sessionToken } });
 
-    return res.status(200).json(user);
+    res.cookie("INFUSE-PROJECT", user.authentication.sessionToken, { domain: "localhost", path: "/" });
+
+    return res.status(200).json(updatedUser);
   } catch (err) {
     console.log(err);
     return res.sendStatus(400);
