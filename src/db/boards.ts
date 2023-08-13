@@ -14,7 +14,6 @@ const BoardModel = mongoose.model("Board", BoardSchema);
 
 export const getBoards = () => BoardModel.find(); // private
 export const getBoardsByOwner = (ownerId: string) => BoardModel.find({ ownerId });
-export const getBoardsByMember = (memberId: string) => BoardModel.find({ members: { $in: [memberId] } });
 export const getBoardById = (id: string) => BoardModel.findById(id); // private
 export const createBoard = (boardData: Record<string, any>) => BoardModel.create(boardData);
 export const updateBoardById = (id: string, boardData: Record<string, any>) => BoardModel.findByIdAndUpdate(id, boardData, { new: true });

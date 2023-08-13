@@ -59,10 +59,11 @@ export async function signIn(req: express.Request, res: express.Response) {
 
     // user.authentication.sessionToken = sessionToken;
     // await user.save();
+    // res.cookie("INFUSE-PROJECT", user.authentication.sessionToken, { domain: "localhost", path: "/" });
 
     const updatedUser = await updateUserById(user._id.toString(), { $set: { "authentication.sessionToken": sessionToken } });
 
-    res.cookie("INFUSE-PROJECT", user.authentication.sessionToken, { domain: "localhost", path: "/" });
+    res.cookie("INFUSE-PROJECT", sessionToken, { domain: "localhost", path: "/" });
 
     return res.status(200).json(updatedUser);
   } catch (err) {
