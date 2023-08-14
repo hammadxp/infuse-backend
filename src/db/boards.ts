@@ -12,9 +12,11 @@ const BoardSchema = new mongoose.Schema({
 
 const BoardModel = mongoose.model("Board", BoardSchema);
 
-export const getBoards = () => BoardModel.find(); // private
-export const getBoardsByOwner = (ownerId: string) => BoardModel.find({ ownerId });
+export const getBoards = (query: Record<string, any>) => BoardModel.find(query);
 export const getBoardById = (id: string) => BoardModel.findById(id); // private
+export const getBoardsByOwnerId = (ownerId: string) => BoardModel.find({ ownerId });
 export const createBoard = (boardData: Record<string, any>) => BoardModel.create(boardData);
 export const updateBoardById = (id: string, boardData: Record<string, any>) => BoardModel.findByIdAndUpdate(id, boardData, { new: true });
 export const deleteBoardById = (id: string) => BoardModel.findByIdAndDelete(id);
+export const updateBoardAddColumn = (boardId: string, columnId: string) =>
+  BoardModel.findByIdAndUpdate(boardId, { $addToSet: { columns: columnId } }, { new: true });

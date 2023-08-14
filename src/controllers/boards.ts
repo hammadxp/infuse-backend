@@ -6,7 +6,7 @@ export async function getBoards(req: express.Request, res: express.Response) {
   try {
     const currentUserId = get(req, "identity._id") as string;
 
-    const boards = await dbBoards.getBoardsByOwner(currentUserId.toString());
+    const boards = await dbBoards.getBoardsByOwnerId(currentUserId.toString());
 
     return res.status(200).json(boards);
   } catch (err) {
@@ -53,6 +53,24 @@ export async function deleteBoard(req: express.Request, res: express.Response) {
     const deletedBoard = await dbBoards.deleteBoardById(boardId);
 
     return res.status(200).json(deletedBoard);
+  } catch (err) {
+    console.log(err);
+    return res.sendStatus(400);
+  }
+}
+
+export async function searchBoards(req: express.Request, res: express.Response) {
+  try {
+    const searchTerm = req.query.q;
+
+    const boards = await dbBoards.getBoards({
+      $or: [
+        { title: { $regex: searchTerm, $options: "i" } }, // Case-insensitive title search
+        { description: { $regex: searchTerm, $options: "i" } }, // Case-insensitive description search
+      ],
+    });
+
+    return res.sendStatus(200);
   } catch (err) {
     console.log(err);
     return res.sendStatus(400);
