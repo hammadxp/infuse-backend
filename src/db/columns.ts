@@ -4,10 +4,9 @@ const ColumnSchema = new mongoose.Schema({
   title: { type: String, required: true },
   color: { type: String },
   position: { type: Number },
-  tasks: { type: [{ type: String }], default: [] },
-  boardId: { type: String, required: true },
   createdAt: { type: Date, required: true, default: Date.now },
   updatedAt: { type: Date, required: true, default: Date.now },
+  boardId: { type: String, required: true },
 });
 
 const ColumnModel = mongoose.model("Column", ColumnSchema);

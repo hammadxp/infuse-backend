@@ -1,5 +1,4 @@
 import express from "express";
-import * as dbBoards from "../db/boards";
 import * as dbColumns from "../db/columns";
 
 export async function getColumns(req: express.Request, res: express.Response) {
@@ -20,7 +19,6 @@ export async function createColumn(req: express.Request, res: express.Response) 
     const columnData = req.body;
 
     const newColumn = await dbColumns.createColumn(columnData);
-    const updatedBoard = await dbBoards.updateBoardAddColumn(columnData.boardId, newColumn._id.toString());
 
     return res.status(201).json(newColumn);
   } catch (err) {
